@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">CF Contest Reminder</string>
+	<string name="notif_title_upcoming">Contest starting soon</string>
+	<string name="notif_title_reminder">Contest is live</string>
+</resources>
