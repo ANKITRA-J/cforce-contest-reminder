@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -57,27 +58,19 @@ fun HomeScreen(nav: NavHostController, vm: HomeViewModel = viewModel()) {
 	val contests by vm.contests.collectAsState()
 	val now by vm.now.collectAsState()
 	val ctx = LocalContext.current
-	Scaffold(
-		topBar = {
-			TopAppBar(title = { Text("Upcoming Contests") }, actions = {
-				IconButton(onClick = { nav.navigate("settings") }) { Text("Settings") }
-			})
-		},
-		floatingActionButton = {
-			Button(onClick = { WorkScheduler.triggerOnce(ctx) }) { Text("Check Now") }
-		}
-	) { padding ->
+	val settings = remember { SettingsRepository(ctx) }.flow.collectAsState(initial = null).value
+	TopBarScaffold(title = "Upcoming Contests", onSettings = { nav.navigate("settings") }, onCheck = { WorkScheduler.triggerOnce(ctx) }) { padding ->
 		LazyColumn(Modifier.fillMaxSize().padding(padding)) {
-			items(contests) { c -> ContestRow(c, now) }
+			items(contests) { c -> ContestRow(c, now, settings?.timezoneId ?: TimeZone.getDefault().id) }
 		}
 	}
 }
 
 @Composable
-private fun ContestRow(c: Contest, nowEpoch: Long) {
+private fun ContestRow(c: Contest, nowEpoch: Long, timezoneId: String) {
 	val start = (c.startTimeSeconds ?: 0L) * 1000
 	val sdf = remember { SimpleDateFormat("EEE, dd MMM yyyy HH:mm") }
-	sdf.timeZone = TimeZone.getDefault()
+	sdf.timeZone = TimeZone.getTimeZone(timezoneId)
 	val timeLeftSec = (c.startTimeSeconds ?: 0L) - (nowEpoch)
 	val h = timeLeftSec / 3600
 	val m = (timeLeftSec % 3600) / 60
@@ -97,8 +90,8 @@ fun SettingsScreen(nav: NavHostController) {
 	val repo = remember { SettingsRepository(ctx) }
 	val settings by repo.flow.collectAsState(initial = null)
 
-	Scaffold(topBar = { TopAppBar(title = { Text("Settings") }) }) { padding ->
-		if (settings == null) return@Scaffold
+	TopBarScaffold(title = "Settings") { padding ->
+		if (settings == null) return@TopBarScaffold
 		Column(Modifier.fillMaxSize().padding(padding).padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
 			Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
 				Text("Notifications")
@@ -121,7 +114,6 @@ fun SettingsScreen(nav: NavHostController) {
 				Text("Timezone")
 				Button(onClick = {
 					launchIo {
-						// Cycle a few common timezones for simplicity
 						val zones = listOf("Asia/Kolkata", "Europe/London", java.util.TimeZone.getDefault().id)
 						val idx = zones.indexOf(settings!!.timezoneId).let { if (it == -1) 0 else it }
 						val next = zones[(idx + 1) % zones.size]
@@ -135,6 +127,16 @@ fun SettingsScreen(nav: NavHostController) {
 			}
 		}
 	}
+}
+
+@Composable
+private fun TopBarScaffold(title: String, onSettings: (() -> Unit)? = null, onCheck: (() -> Unit)? = null, content: @Composable (Modifier) -> Unit) {
+	androidx.compose.material3.Scaffold(
+		topBar = { TopAppBar(title = { Text(title) }, actions = {
+			if (onCheck != null) Button(onClick = onCheck) { Text("Check Now") }
+			if (onSettings != null) Button(onClick = onSettings) { Text("Settings") }
+		}) }
+	) { padding -> content(Modifier.padding(padding)) }
 }
 
 private fun launchIo(block: suspend () -> Unit) {

@@ -18,5 +18,5 @@ data class Contest(
 	@Json(name = "startTimeSeconds") val startTimeSeconds: Long?,
 	@Json(name = "relativeTimeSeconds") val relativeTimeSeconds: Long?
 ) {
-	val url: String get() = "https://codeforces.com/contests/${id}"
+	val url: String get() = "https://codeforces.com/contest/${id}"
 }
