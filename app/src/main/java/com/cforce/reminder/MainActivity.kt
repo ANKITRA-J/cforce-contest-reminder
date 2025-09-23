@@ -27,9 +27,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CFTheme(content: @Composable () -> Unit) {
-	MaterialTheme(colorScheme = darkColorScheme) {
+	MaterialTheme {
 		content()
 	}
 }
-
-private val darkColorScheme = androidx.compose.material3.darkColorScheme()
