@@ -310,7 +310,7 @@ private fun TopBarScaffold(
 					}
 					if (onSettings != null) {
 						Button(onClick = onSettings) {
-							Text("Settings")
+							Text("☰")
 						}
 					}
 				}
