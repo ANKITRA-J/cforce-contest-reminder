@@ -130,13 +130,18 @@ fun SettingsScreen(nav: NavHostController) {
 }
 
 @Composable
-private fun TopBarScaffold(title: String, onSettings: (() -> Unit)? = null, onCheck: (() -> Unit)? = null, content: @Composable (Modifier) -> Unit) {
+private fun TopBarScaffold(
+	title: String,
+	onSettings: (() -> Unit)? = null,
+	onCheck: (() -> Unit)? = null,
+	content: @Composable (androidx.compose.foundation.layout.PaddingValues) -> Unit
+) {
 	androidx.compose.material3.Scaffold(
 		topBar = { TopAppBar(title = { Text(title) }, actions = {
 			if (onCheck != null) Button(onClick = onCheck) { Text("Check Now") }
 			if (onSettings != null) Button(onClick = onSettings) { Text("Settings") }
 		}) }
-	) { padding -> content(Modifier.padding(padding)) }
+	) { padding -> content(padding) }
 }
 
 private fun launchIo(block: suspend () -> Unit) {

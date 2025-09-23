@@ -5,5 +5,8 @@
 		<item name="postSplashScreenTheme">@style/Theme.PostSplash</item>
 	</style>
 
-	<style name="Theme.PostSplash" parent="Theme.Material3.Dark.NoActionBar" />
+	<style name="Theme.PostSplash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+		<item name="windowActionBar">false</item>
+		<item name="windowNoTitle">true</item>
+	</style>
 </resources>
