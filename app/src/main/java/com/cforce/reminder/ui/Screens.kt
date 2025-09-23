@@ -15,10 +15,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -57,8 +55,8 @@ fun HomeScreen(nav: NavHostController, vm: HomeViewModel = viewModel()) {
 	val now by vm.now.collectAsState()
 	val ctx = LocalContext.current
 	val settings = remember { SettingsRepository(ctx) }.flow.collectAsState(initial = null).value
-	TopBarScaffold(title = "Upcoming Contests", onSettings = { nav.navigate("settings") }, onCheck = { WorkScheduler.triggerOnce(ctx) }) { padding ->
-		LazyColumn(Modifier.fillMaxSize().padding(padding)) {
+	TopBarScaffold(title = "Upcoming Contests", onSettings = { nav.navigate("settings") }, onCheck = { WorkScheduler.triggerOnce(ctx) }) {
+		LazyColumn(Modifier.fillMaxSize()) {
 			items(contests) { c -> ContestRow(c, now, settings?.timezoneId ?: TimeZone.getDefault().id) }
 		}
 	}
@@ -88,9 +86,9 @@ fun SettingsScreen(nav: NavHostController) {
 	val repo = remember { SettingsRepository(ctx) }
 	val settings by repo.flow.collectAsState(initial = null)
 
-	TopBarScaffold(title = "Settings") { padding ->
+	TopBarScaffold(title = "Settings") {
 		if (settings == null) return@TopBarScaffold
-		Column(Modifier.fillMaxSize().padding(padding).padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+		Column(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
 			Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
 				Text("Notifications")
 				Switch(checked = settings!!.notificationsEnabled, onCheckedChange = { checked ->
@@ -132,14 +130,19 @@ private fun TopBarScaffold(
 	title: String,
 	onSettings: (() -> Unit)? = null,
 	onCheck: (() -> Unit)? = null,
-	content: @Composable (androidx.compose.foundation.layout.PaddingValues) -> Unit
+	content: @Composable () -> Unit
 ) {
-	Scaffold(
-		topBar = { TopAppBar(title = { Text(title) }, actions = {
+	Column(modifier = Modifier.fillMaxSize()) {
+		Row(
+			modifier = Modifier.fillMaxWidth().padding(16.dp)
+		) {
+			Text(title)
+			Spacer(modifier = Modifier.width(16.dp))
 			if (onCheck != null) Button(onClick = onCheck) { Text("Check Now") }
 			if (onSettings != null) Button(onClick = onSettings) { Text("Settings") }
-		}) }
-	) { padding -> content(padding) }
+		}
+		content()
+	}
 }
 
 private fun launchIo(block: suspend () -> Unit) {
