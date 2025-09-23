@@ -20,7 +20,9 @@ object NetworkModule {
 	}
 
 	private val moshi: Moshi by lazy {
-		Moshi.Builder().build()
+		Moshi.Builder()
+			.add(com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory())
+			.build()
 	}
 
 	private val retrofit: Retrofit by lazy {
