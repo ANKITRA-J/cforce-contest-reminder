@@ -76,10 +76,6 @@ The APK will be generated at `app/build/outputs/apk/release/app-release.apk`
 3. Make your changes
 4. Submit a pull request
 
-## License
-
-MIT License - see LICENSE file for details.
-
 ## Author
 
 Made by [Ankit Raj](https://github.com/ANKITRA-J)
