@@ -7,7 +7,7 @@ Android app to remind you of upcoming Codeforces contests with customizable noti
 
 ## Download
 
-[Download Latest APK](https://github.com/ANKITRA-J/cf-contest-reminder/releases/latest/download/app-release.apk)
+[Download Latest APK](https://github.com/ANKITRA-J/cforce-contest-reminder/releases/download/download/app-release.apk)
 
 ## Features
 
