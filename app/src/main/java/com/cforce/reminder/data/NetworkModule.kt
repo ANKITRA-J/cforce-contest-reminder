@@ -21,7 +21,7 @@ object NetworkModule {
 
 	private val moshi: Moshi by lazy {
 		Moshi.Builder()
-			.add(com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory())
+			// No need for KotlinJsonAdapterFactory when using codegen
 			.build()
 	}
 
