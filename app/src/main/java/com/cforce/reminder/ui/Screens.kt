@@ -319,17 +319,15 @@ private fun TopBarScaffold(
 				modifier = Modifier.weight(1f, fill = true)
 				)
 			Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-					if (onCheck != null) {
-						Button(onClick = onCheck) {
-						Text("Fetch")
-						}
-					}
 					if (onSettings != null) {
-						Button(onClick = onSettings) {
-							Text("Settings")
+						Button(
+							onClick = onSettings,
+							modifier = Modifier.width(44.dp).height(36.dp)
+						) {
+							Text("≡")
 						}
 					}
-				}
+			}
 			}
 		}
 		content()
