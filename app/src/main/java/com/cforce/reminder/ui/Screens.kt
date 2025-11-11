@@ -315,8 +315,8 @@ private fun TopBarScaffold(
 	Column(modifier = Modifier.fillMaxSize()) {
 		TopAppBar(
 			title = { Text(title) },
-			navigationIcon = if (onBack != null) {
-				{
+			navigationIcon = {
+				if (onBack != null) {
 					IconButton(onClick = onBack) {
 						Icon(
 							imageVector = Icons.Default.ArrowBack,
@@ -324,8 +324,6 @@ private fun TopBarScaffold(
 						)
 					}
 				}
-			} else {
-				null
 			},
 			actions = {
 				if (onCheck != null) {
