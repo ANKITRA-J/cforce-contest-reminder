@@ -324,14 +324,19 @@ private fun TopBarScaffold(
 					modifier = Modifier.weight(1f)
 				)
 				if (onCheck != null) {
-					Button(onClick = onCheck) {
-						Text("Refresh")
+					IconButton(onClick = onCheck) {
+						Icon(
+							imageVector = Icons.Default.Refresh,
+							contentDescription = "Refresh"
+						)
 					}
 				}
-				Spacer(modifier = Modifier.width(8.dp))
 				if (onSettings != null) {
-					Button(onClick = onSettings) {
-						Text("Settings")
+					IconButton(onClick = onSettings) {
+						Icon(
+							imageVector = Icons.Default.Menu,
+							contentDescription = "Menu"
+						)
 					}
 				}
 			}
