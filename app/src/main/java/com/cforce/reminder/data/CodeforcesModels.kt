@@ -1,13 +1,16 @@
 package com.cforce.reminder.data
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class ApiResponse<T>(
 	@Json(name = "status") val status: String,
 	@Json(name = "comment") val comment: String?,
 	@Json(name = "result") val result: T?
 )
 
+@JsonClass(generateAdapter = true)
 data class Contest(
 	@Json(name = "id") val id: Long,
 	@Json(name = "name") val name: String,

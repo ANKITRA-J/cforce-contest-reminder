@@ -320,7 +320,7 @@ private fun TopBarScaffold(
 				Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
 					if (onCheck != null) {
 						Button(onClick = onCheck) {
-							Text("Check Now")
+							Text("fetch")
 						}
 					}
 					if (onSettings != null) {
