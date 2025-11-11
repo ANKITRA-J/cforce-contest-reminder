@@ -310,17 +310,18 @@ private fun TopBarScaffold(
 				modifier = Modifier
 					.fillMaxWidth()
 					.padding(16.dp),
-				horizontalArrangement = Arrangement.SpaceBetween,
+			horizontalArrangement = Arrangement.Start,
 				verticalAlignment = Alignment.CenterVertically
 			) {
 				Text(
 					text = title,
-					style = MaterialTheme.typography.headlineSmall
+				style = MaterialTheme.typography.headlineSmall,
+				modifier = Modifier.weight(1f, fill = true)
 				)
-				Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+			Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
 					if (onCheck != null) {
 						Button(onClick = onCheck) {
-							Text("fetch")
+						Text("Fetch")
 						}
 					}
 					if (onSettings != null) {
