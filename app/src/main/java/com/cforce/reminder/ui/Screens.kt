@@ -14,8 +14,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -139,7 +140,7 @@ fun SettingsScreen(nav: NavHostController) {
 	val repo = remember { SettingsRepository(ctx) }
 	val settings by repo.flow.collectAsState(initial = null)
 
-	TopBarScaffold(title = "Settings") {
+	TopBarScaffold(title = "Settings", onBack = { nav.popBackStack() }) {
 		if (settings == null) return@TopBarScaffold
 		LazyColumn(
 			modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -304,6 +305,7 @@ private fun TopBarScaffold(
 	title: String,
 	onSettings: (() -> Unit)? = null,
 	onCheck: (() -> Unit)? = null,
+	onBack: (() -> Unit)? = null,
 	content: @Composable () -> Unit
 ) {
 	Column(modifier = Modifier.fillMaxSize()) {
@@ -315,28 +317,38 @@ private fun TopBarScaffold(
 				modifier = Modifier
 					.fillMaxWidth()
 					.padding(16.dp),
-				horizontalArrangement = Arrangement.SpaceBetween,
+				horizontalArrangement = if (onBack != null) Arrangement.Start else Arrangement.SpaceBetween,
 				verticalAlignment = Alignment.CenterVertically
 			) {
+				if (onBack != null) {
+					IconButton(onClick = onBack) {
+						Icon(
+							imageVector = Icons.Default.ArrowBack,
+							contentDescription = "Back"
+						)
+					}
+				}
 				Text(
 					text = title,
 					style = MaterialTheme.typography.headlineSmall,
 					modifier = Modifier.weight(1f)
 				)
-				if (onCheck != null) {
-					IconButton(onClick = onCheck) {
-						Icon(
-							imageVector = Icons.Default.Refresh,
-							contentDescription = "Refresh"
-						)
+				Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+					if (onCheck != null) {
+						IconButton(onClick = onCheck) {
+							Icon(
+								imageVector = Icons.Default.Refresh,
+								contentDescription = "Refresh"
+							)
+						}
 					}
-				}
-				if (onSettings != null) {
-					IconButton(onClick = onSettings) {
-						Icon(
-							imageVector = Icons.Default.Menu,
-							contentDescription = "Menu"
-						)
+					if (onSettings != null) {
+						IconButton(onClick = onSettings) {
+							Icon(
+								imageVector = Icons.Default.Settings,
+								contentDescription = "Settings"
+							)
+						}
 					}
 				}
 			}
