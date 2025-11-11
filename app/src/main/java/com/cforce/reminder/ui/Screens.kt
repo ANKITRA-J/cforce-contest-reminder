@@ -13,9 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -310,23 +315,34 @@ private fun TopBarScaffold(
 				modifier = Modifier
 					.fillMaxWidth()
 					.padding(16.dp),
-			horizontalArrangement = Arrangement.Start,
+				horizontalArrangement = Arrangement.SpaceBetween,
 				verticalAlignment = Alignment.CenterVertically
 			) {
 				Text(
 					text = title,
-				style = MaterialTheme.typography.headlineSmall,
-				modifier = Modifier.weight(1f, fill = true)
+					style = MaterialTheme.typography.headlineSmall,
+					modifier = Modifier.weight(1f, fill = false)
 				)
-			Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+				Row(
+					horizontalArrangement = Arrangement.spacedBy(4.dp),
+					verticalAlignment = Alignment.CenterVertically
+				) {
 					if (onCheck != null) {
-						Button(onClick = onCheck) {
-						Text("Fetch")
+						IconButton(onClick = onCheck) {
+							Icon(
+								imageVector = Icons.Default.Refresh,
+								contentDescription = "Refresh contests",
+								tint = MaterialTheme.colorScheme.primary
+							)
 						}
 					}
 					if (onSettings != null) {
-						Button(onClick = onSettings) {
-							Text("Settings")
+						IconButton(onClick = onSettings) {
+							Icon(
+								imageVector = Icons.Default.Menu,
+								contentDescription = "Settings",
+								tint = MaterialTheme.colorScheme.primary
+							)
 						}
 					}
 				}
