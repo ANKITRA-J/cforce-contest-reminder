@@ -13,9 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -310,24 +315,30 @@ private fun TopBarScaffold(
 				modifier = Modifier
 					.fillMaxWidth()
 					.padding(16.dp),
-			horizontalArrangement = Arrangement.Start,
+				horizontalArrangement = Arrangement.SpaceBetween,
 				verticalAlignment = Alignment.CenterVertically
 			) {
 				Text(
 					text = title,
-				style = MaterialTheme.typography.headlineSmall,
-				modifier = Modifier.weight(1f, fill = true)
+					style = MaterialTheme.typography.headlineSmall,
+					modifier = Modifier.weight(1f)
 				)
-			Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-					if (onSettings != null) {
-						Button(
-							onClick = onSettings,
-							modifier = Modifier.width(44.dp).height(36.dp)
-						) {
-							Text("≡")
-						}
+				if (onCheck != null) {
+					IconButton(onClick = onCheck) {
+						Icon(
+							imageVector = Icons.Default.Refresh,
+							contentDescription = "Refresh"
+						)
 					}
-			}
+				}
+				if (onSettings != null) {
+					IconButton(onClick = onSettings) {
+						Icon(
+							imageVector = Icons.Default.Menu,
+							contentDescription = "Menu"
+						)
+					}
+				}
 			}
 		}
 		content()
