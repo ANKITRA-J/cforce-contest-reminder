@@ -20,11 +20,14 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -300,6 +303,7 @@ fun SettingsScreen(nav: NavHostController) {
 	}
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBarScaffold(
 	title: String,
@@ -309,18 +313,10 @@ private fun TopBarScaffold(
 	content: @Composable () -> Unit
 ) {
 	Column(modifier = Modifier.fillMaxSize()) {
-		Card(
-			modifier = Modifier.fillMaxWidth(),
-			colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-		) {
-			Row(
-				modifier = Modifier
-					.fillMaxWidth()
-					.padding(16.dp),
-				horizontalArrangement = if (onBack != null) Arrangement.Start else Arrangement.SpaceBetween,
-				verticalAlignment = Alignment.CenterVertically
-			) {
-				if (onBack != null) {
+		TopAppBar(
+			title = { Text(title) },
+			navigationIcon = if (onBack != null) {
+				{
 					IconButton(onClick = onBack) {
 						Icon(
 							imageVector = Icons.Default.ArrowBack,
@@ -328,31 +324,34 @@ private fun TopBarScaffold(
 						)
 					}
 				}
-				Text(
-					text = title,
-					style = MaterialTheme.typography.headlineSmall,
-					modifier = Modifier.weight(1f)
-				)
-				Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-					if (onCheck != null) {
-						IconButton(onClick = onCheck) {
-							Icon(
-								imageVector = Icons.Default.Refresh,
-								contentDescription = "Refresh"
-							)
-						}
-					}
-					if (onSettings != null) {
-						IconButton(onClick = onSettings) {
-							Icon(
-								imageVector = Icons.Default.Settings,
-								contentDescription = "Settings"
-							)
-						}
+			} else {
+				null
+			},
+			actions = {
+				if (onCheck != null) {
+					IconButton(onClick = onCheck) {
+						Icon(
+							imageVector = Icons.Default.Refresh,
+							contentDescription = "Refresh"
+						)
 					}
 				}
-			}
-		}
+				if (onSettings != null) {
+					IconButton(onClick = onSettings) {
+						Icon(
+							imageVector = Icons.Default.Settings,
+							contentDescription = "Settings"
+						)
+					}
+				}
+			},
+			colors = TopAppBarDefaults.topAppBarColors(
+				containerColor = MaterialTheme.colorScheme.surface,
+				titleContentColor = MaterialTheme.colorScheme.onSurface,
+				actionIconContentColor = MaterialTheme.colorScheme.onSurface,
+				navigationIconContentColor = MaterialTheme.colorScheme.onSurface
+			)
+		)
 		content()
 	}
 }
