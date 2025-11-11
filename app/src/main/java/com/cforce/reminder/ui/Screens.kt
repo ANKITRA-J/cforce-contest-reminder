@@ -320,27 +320,23 @@ private fun TopBarScaffold(
 			) {
 				Text(
 					text = title,
-					style = MaterialTheme.typography.headlineSmall
+					style = MaterialTheme.typography.headlineSmall,
+					modifier = Modifier.weight(1f)
 				)
-				Row(
-					horizontalArrangement = Arrangement.End,
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					if (onCheck != null) {
-						IconButton(onClick = onCheck) {
-							Icon(
-								imageVector = Icons.Default.Refresh,
-								contentDescription = "Refresh contests"
-							)
-						}
+				if (onCheck != null) {
+					IconButton(onClick = onCheck) {
+						Icon(
+							imageVector = Icons.Default.Refresh,
+							contentDescription = "Refresh"
+						)
 					}
-					if (onSettings != null) {
-						IconButton(onClick = onSettings) {
-							Icon(
-								imageVector = Icons.Default.Menu,
-								contentDescription = "Settings"
-							)
-						}
+				}
+				if (onSettings != null) {
+					IconButton(onClick = onSettings) {
+						Icon(
+							imageVector = Icons.Default.Menu,
+							contentDescription = "Menu"
+						)
 					}
 				}
 			}
