@@ -12,6 +12,10 @@
 		android:supportsRtl="true"
 		android:theme="@style/Theme.Splash">
 
+		<receiver
+			android:name=".notify.AlarmReceiver"
+			android:exported="false" />
+
 		<activity
 			android:name=".MainActivity"
 			android:exported="true">

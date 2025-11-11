@@ -61,13 +61,13 @@ fun HomeScreen(nav: NavHostController, vm: HomeViewModel = viewModel()) {
 	val settings = remember { SettingsRepository(ctx) }.flow.collectAsState(initial = null).value
 	TopBarScaffold(title = "Upcoming Contests", onSettings = { nav.navigate("settings") }, onCheck = { WorkScheduler.triggerOnce(ctx) }) {
 		LazyColumn(Modifier.fillMaxSize()) {
-			items(contests) { c -> ContestRow(c, now, settings?.timezoneId ?: TimeZone.getDefault().id) }
+			items(contests) { c -> ContestRow(c, now, settings?.timezoneId ?: TimeZone.getDefault().id, leadMinutes = settings?.leadMinutes ?: 30) }
 		}
 	}
 }
 
 @Composable
-private fun ContestRow(c: Contest, nowEpoch: Long, timezoneId: String) {
+private fun ContestRow(c: Contest, nowEpoch: Long, timezoneId: String, leadMinutes: Int) {
 	val start = (c.startTimeSeconds ?: 0L) * 1000
 	val sdf = remember { SimpleDateFormat("EEE, dd MMM yyyy HH:mm") }
 	sdf.timeZone = TimeZone.getTimeZone(timezoneId)
@@ -108,6 +108,21 @@ private fun ContestRow(c: Contest, nowEpoch: Long, timezoneId: String) {
 					style = MaterialTheme.typography.bodyLarge,
 					color = MaterialTheme.colorScheme.primary
 				)
+			}
+			Spacer(modifier = Modifier.height(12.dp))
+			Row(
+				modifier = Modifier.fillMaxWidth(),
+				horizontalArrangement = Arrangement.SpaceBetween,
+				verticalAlignment = Alignment.CenterVertically
+			) {
+				Text("Alarm: ${leadMinutes} min before")
+				val ctx = LocalContext.current
+				Button(onClick = {
+					com.cforce.reminder.notify.AlarmScheduler.scheduleExact(ctx, c, leadMinutes)
+					Toast.makeText(ctx, "Alarm set for ${leadMinutes} min before", Toast.LENGTH_SHORT).show()
+				}) {
+					Text("Set Alarm")
+				}
 			}
 		}
 	}
@@ -310,7 +325,7 @@ private fun TopBarScaffold(
 					}
 					if (onSettings != null) {
 						Button(onClick = onSettings) {
-							Text("☰")
+							Text("Settings")
 						}
 					}
 				}

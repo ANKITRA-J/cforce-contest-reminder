@@ -26,6 +26,9 @@ class ScheduleWorker(appContext: Context, params: WorkerParameters) : CoroutineW
 				ContestNotifier.notifyContest(applicationContext, c.id, c.name, c.url, reminder = false)
 			}
 
+			// Ensure an exact alarm is scheduled for the contest using current lead time.
+			AlarmScheduler.scheduleExact(applicationContext, c, user.leadMinutes)
+
 			// If contest is ongoing and user ignored, send reminder once during contest
 			val duration = c.durationSeconds
 			if (now in start..(start + duration)) {
